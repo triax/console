@@ -1,44 +1,41 @@
-import { useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 export default function Sidebar() {
-    const navigate = useNavigate();
     const menu = [
         {
             title: 'Teams',
             icon: 'bi bi-flag',
-            navigate: () => navigate('/teams'),
+            path: '/teams',
         },
         {
             title: 'Members',
             icon: 'bi bi-people',
-            navigate: () => navigate('/members'),
+            path: '/members',
         },
         {
             title: 'Games',
             icon: 'bi bi-calendar-week',
-            navigate: () => navigate('/games'),
+            path: '/games',
         },
         {
 
             title: 'Votes',
             icon: 'bi bi-clipboard-data',
-            navigate: () => navigate('/votes'),
+            path: '/votes',
         },
     ];
-    const hash = window.location.hash.replace(/^#/, '');
-    const active = (title: string): string => title.localeCompare(hash, undefined, { sensitivity: 'base' }) === 0 ? ' active' : '';
     return (
         <nav id="sidebarMenu" className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
             <div className='position-sticky pt-3 sidebar-sticky'>
                 <ul className="nav flex-column">
                     {menu.map((item, index) => <li key={index} className="nav-item">
-                        <a
-                            className={"nav-link" + active(item.title)} aria-current="page" href=""
-                            onClick={item.navigate}
+                        <NavLink
+                            className={({ isActive }) => isActive ? 'active nav-link' : 'nav-link'} aria-current="page"
+                            to={item.path}
                         >
                             <i className={item.icon} style={{ fontSize: 18, marginRight: 6 }}></i>
                             <span style={{ fontSize: 18 }}>{item.title}</span>
-                        </a>
+                        </NavLink>
                     </li>)}
                 </ul>
 
