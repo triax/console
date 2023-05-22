@@ -5,10 +5,13 @@ import './index.scss'
 import SidebarLayout from './layouts/SidebarLayout.tsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
-import TeamsView from './contents/Teams.tsx'
+import ListTeamsView, { loader as teamsLoader } from './contents/Teams/List.tsx'
 import MembersView, { loader as membersLoader } from './contents/Members.tsx'
 import GamesView from './contents/Games.tsx';
 import VotesView from './contents/Votes.tsx'
+import CreateTeamView from './contents/Teams/Create.tsx'
+import DetailTeamView, { loader as teamDetailLoader } from './contents/Teams/Detail.tsx'
+import EditTeamView from './contents/Teams/Edit.tsx'
 
 // import * as bootstrap from "bootstrap";
 
@@ -16,19 +19,36 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <SidebarLayout />,
-    errorElement: <h1>Not Found</h1>,
+    errorElement: <SidebarLayout><h1>Not Found</h1></SidebarLayout>,
     children: [
       {
         path: '',
-        element: <TeamsView />,
+        element: <ListTeamsView />,
+        loader: teamsLoader,
       },
       {
         path: '/teams',
-        element: <TeamsView />,
+        element: <ListTeamsView />,
+        loader: teamsLoader,
+      },
+      {
+        path: '/teams/new',
+        element: <CreateTeamView />,
+      },
+      {
+        path: '/teams/:teamId',
+        element: <DetailTeamView />,
+        loader: teamDetailLoader,
+      },
+      {
+        path: '/teams/:teamId/edit',
+        element: <EditTeamView />,
+        loader: teamDetailLoader,
       },
       {
         path: '/members',
-        element: <MembersView />
+        element: <MembersView />,
+        loader: membersLoader,
       },
       {
         path: '/teams/:teamId/members',
