@@ -16,5 +16,9 @@ export const onRequest: PagesFunction = async ({ next, request }) => {
     if (user !== BASICAUTH_USER || pass !== BASICAUTH_PASS) {
         return onFailure("Invalid authorization");
     }
-    return await next();
+    const response = await next();
+    // response.headers.set("Access-Control-Allow-Origin", "*");
+    // response.headers.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    // response.headers.set("Access-Control-Allow-Headers", "*");
+    return response;
 }

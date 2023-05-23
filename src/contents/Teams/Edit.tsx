@@ -3,7 +3,7 @@ import ContentTitle from "../../components/ContentTitle";
 import Team from "../../modes/Team";
 import Errors from "../../modes/errors";
 import { useLoaderData, useNavigate } from "react-router-dom";
-import CloudflareImageService from "../../services/Image";
+// import CloudflareImageService from "../../services/Image";
 // import Team from "../../modes/Team";
 
 export default function EditTeamView() {
@@ -148,11 +148,8 @@ export default function EditTeamView() {
                                 name={"team_icon_image"}
                                 onChange={async (e) => {
                                     if (!e.currentTarget.files?.item(0)) return;
-                                    const resut = await (new CloudflareImageService(
-                                        import.meta.env.VITE_CLOUDFLARE_ACCOUNT,
-                                        import.meta.env.VITE_CLOUDFLARE_API_TOKEN,
-                                    )).upload(e.currentTarget.files.item(0) as File);
-                                    console.log(resut);
+                                    // const resut = await (new CloudflareImageService()).upload(e.currentTarget.files.item(0) as File);
+                                    // console.log(resut);
                                     // dispatch({type: "icon_image", value: e.currentTarget.files})
                                 }}
                             />
