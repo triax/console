@@ -17,7 +17,7 @@ export default function EditTeamView() {
             case "homepage_url": state.team.homepage_url = action.value; break;
             case "color_primary": state.team.color_primary = action.value; break;
             case "color_secondary": state.team.color_secondary = action.value; break;
-            // case "icon_image_url":
+            case "icon_image_url": state.team.icon_image_url = action.value; break;
         }
         return { team: state.team };
     }, { team: original });
@@ -152,8 +152,7 @@ export default function EditTeamView() {
                                     if (!e.currentTarget.files?.item(0)) return;
                                     const s = new CloudflareImageService("https://console.triax.football");
                                     const data = await s.upload(e.currentTarget.files.item(0)!);
-                                    console.log(data);
-                                    // dispatch({type: "icon_image", value: e.currentTarget.files.item(0)})
+                                    dispatch({type: "icon_image_url", value: data.result.variants[0]})
                                 }}
                             />
                         </div>

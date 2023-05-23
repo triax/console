@@ -1,28 +1,17 @@
 
-// interface UploadResponse {
-//     result: {
-//         id: string;
-//         filename: string;
-//         uploaded: string;
-//         requireSignedURLs: boolean;
-//         variants: string[];
-//     };
-//     result_info: null;
-//     success: boolean;
-//     errors: any[];
-//     messages: any[];
-// }
-
-// interface DirectUploadResponse {
-//     result: {
-//         id: string;
-//         uploadURL: string;
-//     };
-//     result_info: any;
-//     success: boolean;
-//     errors: any[];
-//     messages: any[];
-// }
+interface ImageUploadResponse {
+    result: {
+        id: string;
+        filename: string;
+        uploaded: string;
+        requireSignedURLs: boolean;
+        variants: string[];
+    };
+    result_info: null;
+    success: boolean;
+    errors: any[];
+    messages: any[];
+}
 
 /**
  * Cloudflare Image Service
@@ -39,7 +28,7 @@ export default class CloudflareImageService {
         return data.result.uploadURL;
     }
 
-    async upload(blob: File): Promise<any> {
+    async upload(blob: File): Promise<ImageUploadResponse> {
         const url = await this.getUploadURL();
         const body = new FormData();
         body.set("file", blob, blob.name);
