@@ -3,6 +3,7 @@ import ContentTitle from "../../components/ContentTitle";
 import Team from "../../modes/Team";
 import Errors from "../../modes/errors";
 import { useLoaderData, useNavigate } from "react-router-dom";
+import CloudflareImageService from "../../services/Image";
 // import Team from "../../modes/Team";
 
 export default function EditTeamView() {
@@ -145,14 +146,16 @@ export default function EditTeamView() {
                                 id="team_icon_image"
                                 required={false}
                                 name={"team_icon_image"}
-                                onChange={(e) => {
-                                    console.log(e.currentTarget.value);
-                                    console.log(e.currentTarget.files?.item(0));
-                                    // const f = e.currentTarget.files?.item(0);
-                                    dispatch({type: "icon_image", value: e.target.value})
+                                onChange={async (e) => {
+                                    if (!e.currentTarget.files?.item(0)) return;
+                                    const resut = await (new CloudflareImageService(
+                                        import.meta.env.VITE_CLOUDFLARE_ACCOUNT,
+                                        import.meta.env.VITE_CLOUDFLARE_API_TOKEN,
+                                    )).upload(e.currentTarget.files.item(0) as File);
+                                    console.log(resut);
+                                    // dispatch({type: "icon_image", value: e.currentTarget.files})
                                 }}
                             />
-                            <div className="invalid-feedback">このフィールドは必須です</div>
                         </div>
                     </div>
                 </div>
