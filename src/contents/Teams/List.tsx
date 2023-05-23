@@ -27,9 +27,10 @@ export default function ListTeams() {
                     {/* map through teams and display each team's info */}
                     {teams.map((team) => (
                         <tr key={team.id}>
-                            <th scope="row">
-                                <Link to={`/teams/${team.id}`}>{team.id}</Link>
-                            </th>
+                            <td scope="row">
+                                {team.icon_image_url ? <img src={team.icon_image_url} alt={team.name} style={{maxWidth: 32, maxHeight: 32}} /> : null}
+                                <Link to={`/teams/${team.id}`} style={{fontSize: "x-small"}}>{team.id}</Link>
+                            </td>
                             <td>
                                 <Link to={`/teams/${team.id}`}>{team.name}</Link>
                             </td>
