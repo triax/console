@@ -16,6 +16,7 @@ export default class Team extends Base {
         color_primary,
         color_secondary,
         homepage_url,
+        icon_image_url,
     }: {
         name: string;
         name_yomi: string;
@@ -23,6 +24,7 @@ export default class Team extends Base {
         color_primary?: string;
         color_secondary?: string;
         homepage_url?: string;
+        icon_image_url?: string;
     }) {
         super(id);
         this.name = name;
@@ -30,6 +32,7 @@ export default class Team extends Base {
         this.homepage_url = homepage_url;
         this.color_primary = color_primary;
         this.color_secondary = color_secondary;
+        this.icon_image_url = icon_image_url;
     }
 
     public static empty(): Team {

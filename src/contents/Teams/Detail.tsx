@@ -41,6 +41,15 @@ export default function DetailTeamView() {
                         <th scope="row">Color Secondary</th>
                         <td>{team.color_secondary}</td>
                     </tr>
+                    <tr>
+                        <th scope="row">Icon Image</th>
+                        <td>
+                            <div>
+                                {team.icon_image_url ? <img src={team.icon_image_url} alt={team.name} style={{maxWidth: 128, maxHeight: 128}} /> : null}
+                            </div>
+                            <span>{team.icon_image_url ?? "未設定"}</span>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
 
