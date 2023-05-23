@@ -3,6 +3,7 @@ import ContentTitle from "../../components/ContentTitle";
 import Team from "../../modes/Team";
 import Errors from "../../modes/errors";
 import { useLoaderData, useNavigate } from "react-router-dom";
+import CloudflareImageService from "../../services/Image";
 // import CloudflareImageService from "../../services/Image";
 // import Team from "../../modes/Team";
 
@@ -16,6 +17,7 @@ export default function EditTeamView() {
             case "homepage_url": state.team.homepage_url = action.value; break;
             case "color_primary": state.team.color_primary = action.value; break;
             case "color_secondary": state.team.color_secondary = action.value; break;
+            // case "icon_image_url":
         }
         return { team: state.team };
     }, { team: original });
@@ -148,9 +150,10 @@ export default function EditTeamView() {
                                 name={"team_icon_image"}
                                 onChange={async (e) => {
                                     if (!e.currentTarget.files?.item(0)) return;
-                                    // const resut = await (new CloudflareImageService()).upload(e.currentTarget.files.item(0) as File);
-                                    // console.log(resut);
-                                    // dispatch({type: "icon_image", value: e.currentTarget.files})
+                                    const s = new CloudflareImageService("https://console.triax.football");
+                                    const data = await s.upload(e.currentTarget.files.item(0)!);
+                                    console.log(data);
+                                    // dispatch({type: "icon_image", value: e.currentTarget.files.item(0)})
                                 }}
                             />
                         </div>

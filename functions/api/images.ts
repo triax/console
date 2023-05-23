@@ -17,8 +17,7 @@ interface DirectUploadResponse {
     messages: any[];
 }
 
-// export const onRequestPost: PagesFunction<{
-export const onRequest: PagesFunction<{
+export const onRequestPost: PagesFunction<{
     // KV: KVNamespace;
     CLOUDFLARE_ACCOUNT: string;
     CLOUDFLARE_API_TOKEN: string;

@@ -29,25 +29,22 @@
 **/
 export default class CloudflareImageService {
     // async upload(blob: Blob): Promise<UploadResponse> {
+    constructor(private baseURL: string = "") { }
+
+    private async getUploadURL(): Promise<string> {
+        const res = await fetch(`${this.baseURL}/api/images`, { method: "POST" });
+        if (!res.ok) throw new Error(res.statusText);
+        const data  = await res.json();
+        if (!data.success) throw new Error(data.error);
+        return data.result.uploadURL;
+    }
 
     async upload(blob: File): Promise<any> {
-
-        console.log(blob);
-        console.log(blob.size);
-        const data = new FormData();
-        data.set("file", blob, blob.name);
-        // const url = "https://upload.imagedelivery.net/bnLYbmoPaEBOGwhAJnzfgw/7bcbb092-0fe4-4735-6221-198c46990400";
-        const url = "https://upload.imagedelivery.net/bnLYbmoPaEBOGwhAJnzfgw/7d372f34-1c42-4014-77f4-4dd307390a00";
-        const res =  await fetch(url, {
-            method: "POST",
-            body: data,
-            headers: {
-                // "Content-Type": "multipart/form-data",
-            },
-        });
-        console.log(res);
-        console.log(await res.text());
-        // console.log(await res.json());
-        return null;
+        const url = await this.getUploadURL();
+        const body = new FormData();
+        body.set("file", blob, blob.name);
+        const res = await fetch(url, { method: "POST", body });
+        const data = await res.json();
+        return data;
     }
 }
