@@ -21,7 +21,7 @@ export default class CloudflareImageService {
     constructor(private baseURL: string = "") { }
 
     private async getUploadURL(): Promise<string> {
-        const res = await fetch(`${this.baseURL}/api/images`, { method: "POST" });
+        const res = await fetch(`${this.baseURL}/api/images/geturl`, { method: "POST" });
         if (!res.ok) throw new Error(res.statusText);
         const data  = await res.json();
         if (!data.success) throw new Error(data.error);
@@ -37,18 +37,18 @@ export default class CloudflareImageService {
         return data;
     }
 
-    private async uploadViaURL(url: string): Promise<ImageUploadResponse> {
+    private async uploadViaURL(url: string, filename?: string): Promise<ImageUploadResponse> {
         const res = await fetch(`${this.baseURL}/api/images/viaurl`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ url }),
+            // headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ url, ...(filename ? { filename } : {}) }),
         });
         if (res.status >= 400) throw new Error(res.statusText);
         const data = await res.json();
         return data;
     }
 
-    async transferToCloudflare(raw?: string): Promise<string> {
+    async transferToCloudflare(raw?: string, filename?: string): Promise<string> {
         if (!raw) return "";
         const url = new URL(raw);
         if (url.host.includes("imagedelivery.net")) return raw; // No need to transfer
@@ -58,9 +58,14 @@ export default class CloudflareImageService {
             if (id) {
                 source.pathname = "/uc"
                 source.search = "?" + (new URLSearchParams({ export: "view", id })).toString();
+                console.log(source.toString());
             }
         }
-        const res = await this.uploadViaURL(source.toString());
-        return res.result.variants[0];
+        try {
+            const res = await this.uploadViaURL(source.toString(), filename);
+            return res.result.variants[0];
+        } catch (e) {
+            return raw;
+        }
     }
 }

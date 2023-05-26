@@ -27,7 +27,7 @@ export default function MembersView() {
                         if (!f) return;
                         const members = await Member.parseCSV_v20230523(f, team.id);
                         const inserted = await Promise.all(members.map(async (m) => {
-                            m.profile_image_url = await s.transferToCloudflare(m.profile_image_url);
+                            m.profile_image_url = await s.transferToCloudflare(m.profile_image_url, m.name_eng);
                             return await m.insert();
                         }));
                         console.log(inserted);
