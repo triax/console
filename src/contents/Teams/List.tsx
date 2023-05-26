@@ -21,6 +21,8 @@ export default function ListTeams() {
                         <th scope="col">Homepage URL</th>
                         <th scope="col">Color Primary</th>
                         <th scope="col">Color Secondary</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,8 +37,14 @@ export default function ListTeams() {
                                 <Link to={`/teams/${team.id}`}>{team.name}</Link>
                             </td>
                             <td>{team.homepage_url}</td>
-                            <td>{team.color_primary}</td>
-                            <td>{team.color_secondary}</td>
+                            <td><span style={{color: team.color_primary}}>{team.color_primary}</span></td>
+                            <td><span style={{color: team.color_secondary}}>{team.color_secondary}</span></td>
+                            <td>
+                                <Link to={`/teams/${team.id}/members`} className="btn btn-primary btn-sm">部員編集</Link>
+                            </td>
+                            <td>
+                                <Link to={`/teams/${team.id}/edit`} className="btn btn-secondary btn-sm">Edit</Link>
+                            </td>
                         </tr>
                     ))}
                 </tbody>

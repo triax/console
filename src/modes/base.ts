@@ -22,8 +22,7 @@ export class Base {
     validate(): { [key: string]: { key: string, message: string } } | null {
         throw Error("`validate` method must be implemented by subclass");
     }
-    async upsert<T extends Base>(this: T): Promise<T> {
-        const path = (<any>this).constructor.path;
+    async upsert<T extends Base>(this: T, path = (<any>this).constructor.path): Promise<T> {
         if (this.id) {
             const ref = doc(db, path, this.id);
             await updateDoc(ref, this.encode());
@@ -46,8 +45,7 @@ export class Base {
         });
     }
 
-    static async list<T>(this: ModelConstructor<T>): Promise<T[]> {
-        const path = (<any>this).path;
+    static async list<T>(this: ModelConstructor<T>, path: string = (<any>this).path): Promise<T[]> {
         const ref = collection(db, path);
         const snapshot = await getDocs(ref)
         return snapshot.docs.map(doc => new this({
