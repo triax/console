@@ -1,8 +1,7 @@
 
-const BASICAUTH_USER = "test";
-const BASICAUTH_PASS = "testtest";
-
-export const onRequest: PagesFunction = async ({ next, request }) => {
+export const onRequest: PagesFunction<{
+    BASICAUTH_USER, BASICAUTH_PASS,
+}> = async ({ next, request, env }) => {
     const onFailure = (msg) => new Response(msg, { status: 401, headers: { "WWW-Authenticate": 'Basic realm="Hello"' } });
     const auth = request.headers.get("Authorization");
     if (!auth) {
@@ -13,7 +12,7 @@ export const onRequest: PagesFunction = async ({ next, request }) => {
         return onFailure("Invalid authorization")
     }
     const [user, pass] = atob(encoded).split(":");
-    if (user !== BASICAUTH_USER || pass !== BASICAUTH_PASS) {
+    if (user !== env.BASICAUTH_USER || pass !== env.BASICAUTH_PASS) {
         return onFailure("Invalid authorization");
     }
     const response = await next();
