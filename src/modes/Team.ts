@@ -1,6 +1,16 @@
 import { Base } from "./base";
 import Errors from "./errors";
 
+export interface TeamPropsObject {
+    id?: string;
+    name: string;
+    name_yomi: string;
+    color_primary?: string;
+    color_secondary?: string;
+    homepage_url?: string;
+    icon_image_url?: string;
+}
+
 export default class Team extends Base {
     static path = "teams";
 
@@ -10,41 +20,26 @@ export default class Team extends Base {
     public color_primary?: string;
     public color_secondary?: string;
     public homepage_url?: string;
-    constructor({
-        name, name_yomi,
-        id,
-        color_primary,
-        color_secondary,
-        homepage_url,
-        icon_image_url,
-    }: {
-        name: string;
-        name_yomi: string;
-        id?: string;
-        color_primary?: string;
-        color_secondary?: string;
-        homepage_url?: string;
-        icon_image_url?: string;
-    }) {
-        super(id);
-        this.name = name;
-        this.name_yomi = name_yomi;
-        this.homepage_url = homepage_url;
-        this.color_primary = color_primary;
-        this.color_secondary = color_secondary;
-        this.icon_image_url = icon_image_url;
+    constructor(props: TeamPropsObject) {
+        super(props.id);
+        this.name = props.name;
+        this.name_yomi = props.name_yomi;
+        this.homepage_url = props.homepage_url;
+        this.color_primary = props.color_primary;
+        this.color_secondary = props.color_secondary;
+        this.icon_image_url = props.icon_image_url;
     }
 
     public static empty(): Team {
         return new Team({
-            name: "三菱商事 CLUB TRIAX", name_yomi: "みつびししょうじくらぶとらいあっくす",
-            homepage_url: "https://www.triax.football/",
-            color_primary: "#8b0101", color_secondary: "#2f2f2f"
+            id: "__null__",
+            name: "", name_yomi: "",
+            homepage_url: "",
+            color_primary: "#303030", color_secondary: "#303030"
         });
-        // return new Team({ name: "", name_yomi: "", color_primary: "#8b0101", color_secondary: "#2f2f2f" });
     }
 
-    override encode(): Record<string, any> {
+    override encode(): TeamPropsObject {
         return {
             name: this.name,
             name_yomi: this.name_yomi,
@@ -57,6 +52,7 @@ export default class Team extends Base {
     }
     override validate(): Errors | null {
         const errors: { [key: string]: { key: string; message: string; } } = {};
+        if (this.id == "__null__") errors["id"] = { key: "id", message: "idが不正です" };
         try {
             new URL(this.homepage_url ?? "");
         } catch (e) {

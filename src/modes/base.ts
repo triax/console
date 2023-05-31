@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { addDoc, collection, doc, getDoc, getDocs, getFirestore, updateDoc } from "firebase/firestore";
+import Errors from "./errors";
 
 const firebaseConfig = JSON.parse(import.meta.env.VITE_FIREBASE_CONFIG_JSONSTR);
 const app = initializeApp(firebaseConfig);
@@ -19,7 +20,7 @@ export class Base {
     encode(): Record<string, any> {
         throw Error("`encode` method must be implemented by subclass");
     }
-    validate(): { [key: string]: { key: string, message: string } } | null {
+    validate(): Errors | null {
         throw Error("`validate` method must be implemented by subclass");
     }
     async upsert<T extends Base>(this: T, path = (<any>this).constructor.path): Promise<T> {

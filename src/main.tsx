@@ -7,7 +7,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import ListTeamsView, { loader as teamsLoader } from './contents/Teams/List.tsx'
 import MembersView, { loader as membersLoader } from './contents/Members.tsx'
-import GamesView from './contents/Games.tsx';
+import GamesView, { loader as gamesLoader } from './contents/Games/List.tsx';
+import CreateGameView, { loader as createGameLoader } from './contents/Games/Ceate.tsx'
 import VotesView from './contents/Votes.tsx'
 import CreateTeamView from './contents/Teams/Create.tsx'
 import DetailTeamView, { loader as teamDetailLoader } from './contents/Teams/Detail.tsx'
@@ -58,6 +59,12 @@ const router = createBrowserRouter([
       {
         path: '/games',
         element: <GamesView />,
+        loader: gamesLoader,
+      },
+      {
+        path: '/games/new',
+        element: <CreateGameView />,
+        loader: createGameLoader,
       },
       {
         path: '/votes',
