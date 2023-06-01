@@ -121,6 +121,9 @@ export default class Game extends Base {
         if (this.result) {
             return Status.FINISHED;
         }
+        if (this.status == Status.ONGOING) {
+            return Status.ONGOING;
+        }
         if (this.status == Status.STANDBY) {
             if (this.kick_off.getTime() < Date.now()) {
                 return Status.ONGOING;

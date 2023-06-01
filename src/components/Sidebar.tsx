@@ -1,27 +1,33 @@
+import { useLocation } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 
 export default function Sidebar() {
+    const { pathname } = useLocation();
     const menu = [
         {
             title: 'Teams',
             icon: 'bi bi-flag',
             path: '/teams',
+            active: pathname === '/teams',
         },
         {
             title: 'Members',
             icon: 'bi bi-people',
             path: '/members',
+            active: pathname.endsWith('/members'),
         },
         {
             title: 'Games',
             icon: 'bi bi-calendar-week',
             path: '/games',
+            active: pathname === '/games',
         },
         {
 
             title: 'Votes',
             icon: 'bi bi-clipboard-data',
             path: '/votes',
+            active: pathname.endsWith('/votes'),
         },
     ];
     return (
@@ -30,7 +36,7 @@ export default function Sidebar() {
                 <ul className="nav flex-column">
                     {menu.map((item, index) => <li key={index} className="nav-item">
                         <NavLink
-                            className={({ isActive }) => isActive ? 'active nav-link' : 'nav-link'} aria-current="page"
+                            className={() => item.active ? 'active nav-link' : 'nav-link'} aria-current="page"
                             to={item.path}
                         >
                             <i className={item.icon} style={{ fontSize: 18, marginRight: 6 }}></i>
