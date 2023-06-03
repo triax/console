@@ -65,11 +65,6 @@ export default class Member extends Base {
         };
     }
 
-    async insert(): Promise<Member> {
-        if (this.id) throw Error("id must be null");
-        return super.upsert<Member>(`teams/${this.team_id}/members`);
-    }
-
     static list<T>(teamId: string): Promise<T[]> {
         return super.list<T>(`teams/${teamId}/members`);
     }
@@ -110,9 +105,35 @@ export default class Member extends Base {
                     ...(member["twitter"] ? {twitter: member["twitter"]} : {}),
                     ...(member["instagram"] ? {twitter: member["instagram"]} : {}),
                 },
+                ...(member["id"] ? { id: member["id"] } : {}),
                 ...(teamId ? { team_id: teamId } : {}),
             });
         });
         return members;
+    }
+
+    static toCSV(members: Member[]): string {
+        const headers = [
+            "id",
+            "name",
+            "name_yomi",
+            "name_eng",
+            "team_id",
+            "number",
+            "position",
+            "profile_image_url",
+            "comment",
+            "twitter",
+            "instagram",
+        ];
+        const rows = members.map(member => {
+            const row: any = {};
+            headers.forEach(header => row[header] = (member as any)[header]);
+            return row;
+        });
+        return [
+            headers.join(","),
+            ...rows.map(row => headers.map(header => row[header]).join(",")),
+        ].join("\n");
     }
 }

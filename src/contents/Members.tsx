@@ -26,13 +26,29 @@ export default function MembersView() {
                         const f = e.currentTarget.files?.item(0);
                         if (!f) return;
                         const members = await Member.parseCSV_v20230523(f, team.id);
-                        const inserted = await Promise.all(members.map(async (m) => {
-                            m.profile_image_url = await s.transferToCloudflare(m.profile_image_url, m.name_eng);
-                            return await m.insert();
+                        const result = await Promise.all(members.map(async (m) => {
+                            try {
+                                m.profile_image_url = await s.transferToCloudflare(m.profile_image_url, m.name_eng);
+                            } catch (e) {
+                                console.log("[DEBUG][ERROR]", e);
+                            }
+                            return await m.upsert(`teams/${team.id}/members`);
                         }));
-                        console.log(inserted);
+                        console.log("[DONE]", result);
                     }}
                 />
+            </div>
+            <div>
+                <button onClick={async () => {
+                    const csv = await Member.toCSV(members);
+                    const blob = new Blob([csv], {type: "text/csv"});
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = `members_${team.id}.csv`;
+                    a.click();
+                    setTimeout(() => window.URL.revokeObjectURL(url), 100);
+                }}>CSV Downoad</button>
             </div>
 
 
