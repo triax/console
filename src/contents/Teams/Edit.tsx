@@ -30,7 +30,7 @@ export default function EditTeamView() {
     };
     return (
         <>
-            <ContentTitle title="Create New Team" />
+            <ContentTitle title="Edit Team Info" />
 
             <form style={{marginTop: 32}} className="row g-16 g-lg-16" noValidate={true}>
 

@@ -50,9 +50,9 @@ export default class Team extends Base {
             ...(this.icon_image_url ? { icon_image_url: this.icon_image_url } : {}),
         };
     }
-    override validate(): Errors | null {
+    override validate(create = false): Errors | null {
         const errors: { [key: string]: { key: string; message: string; } } = {};
-        if (this.id == "__null__") errors["id"] = { key: "id", message: "idが不正です" };
+        if (this.id == "__null__" && !create) errors["id"] = { key: "id", message: "idが不正です" };
         try {
             new URL(this.homepage_url ?? "");
         } catch (e) {

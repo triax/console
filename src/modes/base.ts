@@ -24,11 +24,12 @@ export class Base {
         throw Error("`validate` method must be implemented by subclass");
     }
     async upsert<T extends Base>(this: T, path = (<any>this).constructor.path): Promise<T> {
-        if (this.id) {
+        if (this.id && this.id !== "__null__") {
             const ref = doc(db, path, this.id);
             await updateDoc(ref, this.encode());
             return this;
         } else {
+            this.id = undefined;
             const col = collection(db, path);
             const ref = await addDoc(col, this.encode());
             this.id = ref.id;

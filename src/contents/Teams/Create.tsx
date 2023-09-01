@@ -2,7 +2,7 @@ import { useReducer, useState } from "react";
 import ContentTitle from "../../components/ContentTitle";
 import Team from "../../modes/Team";
 import Errors from "../../modes/errors";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 // import Team from "../../modes/Team";
 
 export default function CreateTeamView() {
@@ -18,11 +18,12 @@ export default function CreateTeamView() {
         return { team: state.team };
     }, { team: Team.empty() });
     // console.log(team);
+    const navigate = useNavigate();
     const submit = async (team: Team) => {
-        const e = team.validate();
+        const e = team.validate(true);
         if (e) return setErrors(e);
         const result = await team.upsert();
-        Navigate({ to: `/teams/${result.id}` });
+        navigate(`/teams/${result.id}`);
     };
     return (
         <>
